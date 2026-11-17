@@ -3,7 +3,7 @@
 A small Codeforces-style contest site. Students make an
 account, enter contests, write C++, Python or Java in the browser, and get a verdict from
 hidden tests. Organizers build contests, problems and tests in a password-protected admin
-area. It is made to run on Vercel's free plan.
+area. It is made to run on Vercel's free plan. 
 
 ## What it does
 
