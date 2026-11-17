@@ -33,6 +33,13 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
             <label htmlFor="password">Password</label>
             <input id="password" name="password" type="password" required minLength={8} maxLength={200} autoComplete="new-password" />
             <p className="help">At least 8 characters.</p>
+            <label className="check agree">
+              <input type="checkbox" id="agree" name="agree" required />
+              <span>
+                I am 13 or older, and I agree to the <Link href="/terms">Terms</Link> and the{" "}
+                <Link href="/privacy">Privacy notice</Link>.
+              </span>
+            </label>
             <div className="form-actions">
               <button className="btn primary">Create account</button>
             </div>

@@ -3,7 +3,7 @@ import { requireAdmin } from "@/lib/auth";
 import { q1 } from "@/lib/db";
 import { checkHealth } from "@/lib/health";
 import { languageDisplayNames } from "@/lib/judge/runtime";
-import { usageThisMonth } from "@/lib/settings";
+import { getSettings, usageThisMonth } from "@/lib/settings";
 import { JudgePanel } from "@/components/admin/JudgePanel";
 
 export default async function AdminHome() {
@@ -18,6 +18,7 @@ export default async function AdminHome() {
     ),
     usageThisMonth(),
   ]);
+  const { contactEmail } = await getSettings();
 
   return (
     <main>
@@ -53,6 +54,13 @@ export default async function AdminHome() {
         <p className="msg warn">
           {health.admin.state !== "good" ? health.admin.title + ". " + health.admin.detail : health.database.detail}{" "}
           <Link href="/setup">Open the setup check</Link>
+        </p>
+      )}
+
+      {!contactEmail && (
+        <p className="msg warn">
+          The Privacy and Terms pages tell people to email you, but no contact email is set.{" "}
+          <Link href="/admin/settings">Add one in Settings</Link>
         </p>
       )}
 

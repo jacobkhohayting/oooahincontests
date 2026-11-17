@@ -21,6 +21,13 @@ export default async function AdminSettingsPage() {
         <input id="site_name" name="site_name" type="text" required maxLength={80} defaultValue={settings.siteName} />
         <p className="help">Shown in the top bar and in the browser tab.</p>
 
+        <label htmlFor="contact_email">Contact email</label>
+        <input id="contact_email" name="contact_email" type="email" maxLength={200} defaultValue={settings.contactEmail} />
+        <p className="help">
+          Shown publicly on the <Link href="/privacy">Privacy</Link> and <Link href="/terms">Terms</Link> pages, for
+          questions and for requests to correct or delete an account. Use an address you check.
+        </p>
+
         <h2>Accounts</h2>
         <label className="check">
           <input type="checkbox" name="registration_open" defaultChecked={settings.registrationOpen} /> Anyone can

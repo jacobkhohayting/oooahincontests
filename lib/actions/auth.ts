@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { refresh } from "next/cache";
 import { isUniqueViolation, q, q1 } from "../db";
 import { UserError } from "../errors";
-import { formAction, text } from "../form";
+import { checkbox, formAction, text } from "../form";
 import {
   adminPassword,
   checkAdminPassword,
@@ -68,12 +68,15 @@ export const register = formAction(async (form) => {
 
   const fields = await readProfileFields(form);
   const password = text(form, "password", { name: "Password", min: 8, max: 200, trim: false });
+  if (!checkbox(form, "agree")) {
+    throw new UserError("Tick the box to confirm you are 13 or older and agree to the terms and the privacy notice.");
+  }
 
   let userId: number;
   try {
     const row = await q1<{ id: number }>(
-      `insert into users (username, email, full_name, student_id, password_hash)
-       values ($1, $2, $3, $4, $5) returning id`,
+      `insert into users (username, email, full_name, student_id, password_hash, agreed_at)
+       values ($1, $2, $3, $4, $5, now()) returning id`,
       [fields.username, fields.email, fields.fullName, fields.studentId ?? "", await hashPassword(password)],
     );
     userId = row!.id;
@@ -180,4 +183,19 @@ export const adminLogin = formAction(async (form) => {
 export const adminLogout = formAction(async () => {
   await signOutAdmin();
   redirect("/");
+});
+
+/** Lets someone remove their own account, with everything that belongs to it. */
+export const deleteAccount = formAction(async (form) => {
+  const { user } = await getViewer();
+  if (!user) redirect("/login?next=/profile");
+  const row = await q1<{ password_hash: string }>("select password_hash from users where id = $1", [user.id]);
+  const password = String(form.get("password") ?? "");
+  if (!row || !(await verifyPassword(password, row.password_hash))) {
+    throw new UserError("That is not your current password, so nothing was deleted.");
+  }
+  // Submissions, contest entries and login sessions go with the account.
+  await q("delete from users where id = $1", [user.id]);
+  await signOutUser();
+  redirect("/?account=deleted");
 });

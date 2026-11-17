@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
-import { updateProfile } from "@/lib/actions/auth";
+import { deleteAccount, updateProfile } from "@/lib/actions/auth";
 import { ActionForm } from "@/components/ActionForm";
 import { ProfileFields } from "@/components/ProfileFields";
 
@@ -24,6 +24,22 @@ export default async function ProfilePage() {
           <input id="new_password" name="new_password" type="password" minLength={8} maxLength={200} autoComplete="new-password" />
           <div className="form-actions">
             <button className="btn primary">Save profile</button>
+          </div>
+        </ActionForm>
+
+        <h2>Delete your account</h2>
+        <p className="help">
+          Removes your account together with your submissions and your place on leaderboards. This cannot be undone.
+        </p>
+        <ActionForm
+          action={deleteAccount}
+          messages="bottom"
+          confirm="Delete your account and all of your submissions for good?"
+        >
+          <label htmlFor="delete_password">Your password, to confirm</label>
+          <input id="delete_password" name="password" type="password" required autoComplete="current-password" />
+          <div className="form-actions">
+            <button className="btn danger">Delete my account</button>
           </div>
         </ActionForm>
       </div>

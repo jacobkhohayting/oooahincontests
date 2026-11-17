@@ -8,6 +8,8 @@ export type SiteSettings = {
   registrationOpen: boolean;
   /** Comma-separated list such as "example.org". Empty = any email address may register. */
   emailDomains: string;
+  /** Shown on the Privacy and Terms pages so people can reach the organizers. */
+  contactEmail: string;
   /** Whether the sign-up form asks for a student ID. */
   studentId: "required" | "optional" | "off";
   /** Who sees students' full names next to their usernames. */
@@ -23,6 +25,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   siteName: "oooahin",
   registrationOpen: true,
   emailDomains: "",
+  contactEmail: "",
   studentId: "optional",
   namesVisibility: "members",
   allowRun: true,

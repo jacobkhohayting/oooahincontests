@@ -21,10 +21,8 @@ export async function recentCount(bucket: string, windowSeconds: number): Promis
 /** Records one event for this bucket. */
 export async function record(bucket: string): Promise<void> {
   await q("insert into rate_events (bucket) values ($1)", [bucket]);
-  // Occasionally clear out old rows so the table stays tiny.
-  if (Math.random() < 0.02) {
-    await q("delete from rate_events where at < now() - interval '1 day'").catch(() => {});
-  }
+  // These rows contain network addresses; never keep them longer than a day.
+  await q("delete from rate_events where at < now() - interval '1 day'").catch(() => {});
 }
 
 /**
@@ -42,8 +40,6 @@ export async function allow(bucket: string, limit: number, windowSeconds: number
      returning 1 as ok`,
     [bucket, limit, windowSeconds],
   );
-  if (Math.random() < 0.02) {
-    await q("delete from rate_events where at < now() - interval '1 day'").catch(() => {});
-  }
+  await q("delete from rate_events where at < now() - interval '1 day'").catch(() => {});
   return row !== null;
 }

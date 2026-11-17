@@ -146,4 +146,7 @@ export const MIGRATIONS: string[] = [
      set value = (value - 'emailDomains') || jsonb_build_object('siteName', 'oooahin'), updated_at = now()
    where key = 'site';
   `,
+  /* 3: when the account holder confirmed their age and agreed to the terms (empty for older accounts) */ `
+  alter table users add column agreed_at timestamptz;
+  `,
 ];

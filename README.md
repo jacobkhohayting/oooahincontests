@@ -24,6 +24,9 @@ area. It is made to run on Vercel's free plan.
 - **Privacy**: during a contest students see everyone's verdicts and standings but only
   their own code. After it ends, problems and standings are public, and code is public
   only if you switch that on for the contest.
+- **Privacy and terms**: a Privacy notice and Terms of use (linked in the footer), a
+  required "13 or older, and I agree" box on the sign-up form, and a button on the
+  profile page that lets people delete their own account.
 - **Archive**: finished contests with their problems, and editorials and reference
   solutions if you publish them.
 - **Admin area** (`/admin`, behind a secret password): create, edit, duplicate, hide,
@@ -58,7 +61,9 @@ has to be installed on your computer.
 8. **Prepare the judge.** Open `/admin`, enter the admin password and press
    **Prepare the judge**. This installs the compilers once (about two minutes) and tests
    all three languages. If you skip this, it happens on the first submission instead.
-9. **Make a contest.** In the admin area: New contest, add problems and tests, use "Try a
+9. **Add a contact email.** In Admin > Settings, fill in "Contact email". The Privacy and
+   Terms pages show it so people can reach you with questions or requests.
+10. **Make a contest.** In the admin area: New contest, add problems and tests, use "Try a
    solution" on each problem, then Publish.
 
 To change the site later, edit or upload files on GitHub; Vercel redeploys on every commit.
@@ -123,6 +128,19 @@ Java a multiplier if you want slower languages to have more time.
   project's Settings > Functions (it is on by default for new projects).
 - **A student forgot their password**: Admin > Users > the student > set a new password.
 - **You forgot the admin password**: change `ADMIN_PASSWORD` in Vercel and redeploy.
+
+## Privacy notice and terms
+
+The texts live in `app/privacy/page.tsx` and `app/terms/page.tsx`. They are written in
+plain language and describe what this code really does: what is collected, who can see it,
+which companies host it (Vercel and Neon), and how to delete an account. They are a
+reasonable starting point, not legal advice.
+
+- If you change how the site works (for example add analytics, send email, or move to
+  other hosting), update the text and the "Last updated" date in the same commit.
+- If you learn that an account belongs to a child under 13, delete it (Admin > Users).
+- When someone asks for their data to be corrected or removed, do it: they can edit and
+  delete their own account from the profile page, and you can do the same in Admin > Users.
 
 ## Decisions made for you
 

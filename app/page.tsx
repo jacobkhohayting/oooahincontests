@@ -6,8 +6,9 @@ import { ContestRow } from "@/components/ContestList";
 
 const RECENT = 5;
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ account?: string }> }) {
   const { user, isAdmin } = await getViewer();
+  const justDeleted = (await searchParams).account === "deleted" && !user;
   const contests = await listContests(isAdmin);
   const phaseOf = (c: (typeof contests)[number]) => contestPhase(c.start_at, c.end_at);
   const running = contests.filter((c) => phaseOf(c) === "running");
@@ -17,6 +18,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      {justDeleted && <p className="msg ok">Your account and your submissions have been deleted.</p>}
       {contests.length === 0 && (
         <>
           <h1>Contests</h1>

@@ -74,6 +74,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <div className="footer-inner">
             <span>{settings.siteName}</span>
             <ThemeToggle initial={theme} />
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
             <span className="push">
               <Link href="/admin">Organizers</Link>
             </span>

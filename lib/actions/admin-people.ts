@@ -91,10 +91,15 @@ export const saveSettings = formAction(async (form) => {
       throw new UserError(`"${domain}" does not look like an email ending. Example: example.org`);
     }
   }
+  const contactEmail = text(form, "contact_email", { name: "Contact email", max: 200 });
+  if (contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+    throw new UserError("The contact email does not look like an email address.");
+  }
   const settings: SiteSettings = {
     siteName: text(form, "site_name", { name: "Site name", min: 1, max: 80 }) || DEFAULT_SETTINGS.siteName,
     registrationOpen: checkbox(form, "registration_open"),
     emailDomains: domains.join(", "),
+    contactEmail,
     studentId: oneOf(form, "student_id_rule", ["required", "optional", "off"] as const, "option"),
     namesVisibility: oneOf(form, "names_visibility", ["everyone", "members", "organizers"] as const, "option"),
     allowRun: checkbox(form, "allow_run"),
